@@ -1,7 +1,11 @@
+/**
+ * @description blog数据模型
+ */
+
 const { INTEGER, STRING, TEXT } = require('../utils/types')
 const sequelize = require("../utils/sequelize")
 
-module.exports = sequelize.define(
+const Blog = sequelize.define(
     'blog',
     {
         id: {
@@ -18,3 +22,5 @@ module.exports = sequelize.define(
 
     }
 )
+
+module.exports = Blog

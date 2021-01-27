@@ -1,7 +1,10 @@
 const Sequelize = require('sequelize')
 //传入参数 数据库名 用户名，密码
-const sequelize = new Sequelize('demo', 'root', '12345678', {
-    host: 'localhost',
+
+
+
+const sequelize = new Sequelize('test', 'admin', '123456Aa', {
+    host: '81.68.229.173',
     dialect: 'mysql',
     operatorsAliases: false,
     pool: {
@@ -11,6 +14,8 @@ const sequelize = new Sequelize('demo', 'root', '12345678', {
         idle: 10000,
     }
 })
+
+
 sequelize
     .authenticate()
     .then(() => {
