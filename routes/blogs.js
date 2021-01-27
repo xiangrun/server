@@ -5,7 +5,7 @@ const router = new Router({
 //引入业务逻辑
 const blogs = require("../controllers/blogs");
 
-22
+
 router.get('/list', blogs.list);
 
 
