@@ -13,7 +13,7 @@ class BaseModel {
             this.data = data
         }
         if (message) {
-            this.message.message
+            this.message = message
         }
     }
 }
@@ -23,5 +23,26 @@ class BaseModel {
  */
 
 class SuccessModel extends BaseModel {
+    constructor(data = {}) {
+        super({
+            errno: 0,
+            data
+        })
+    }
+}
 
+/**
+ * 失败的数据模型
+ */
+class ErrorModel extends BaseModel {
+    constructor({ errno, message }) {
+        super({
+            errno,
+            message
+        })
+    }
+}
+module.exports = {
+    SuccessModel,
+    ErrorModel
 }
