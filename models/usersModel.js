@@ -1,5 +1,5 @@
-const { INTEGER, STRING, TEXT } = require('../utils/types')
-const sequelize = require("../utils/sequelize")
+const { INTEGER, STRING, TEXT } = require('../config/types')
+const sequelize = require("../config/sequelize")
 
 const User = sequelize.define(
     'users',
