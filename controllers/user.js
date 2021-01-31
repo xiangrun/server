@@ -3,9 +3,9 @@
  */
 const jwt = require('jsonwebtoken')
 const { secret } = require('../config/secret')
-const { getUserInfo, createUser, updateUser } = require('../services/user')
+const { getUserInfo, createUser, updateUser, deleteUser } = require('../services/user')
 const { SuccessModel, ErrorModel } = require('../models/ResModel')
-const { loginFailInfo, registerUserNameExistInfo } = require('../models/ErrorInfo')
+const { loginFailInfo, registerUserNameExistInfo, changeInfoFail, deleteFailInfo } = require('../models/ErrorInfo')
 
 
 
@@ -13,6 +13,7 @@ const { loginFailInfo, registerUserNameExistInfo } = require('../models/ErrorInf
  * 注册
  */
 async function register(ctx, next) {
+    console.log(ctx);
     const { userName, password } = ctx.request.body
     //services
     const userInfo = await getUserInfo(userName, password)
@@ -55,17 +56,29 @@ async function login(ctx) {
  * 修改用户
  */
 async function changeInfo(ctx) {
-    const { newUserName } = ctx.request.body
-    const result = await updateUser({ newUserName }, { userName })
-    //services
-    if (result) {
-        return new SuccessModel(result)
-    }
-    return new ErrorModel(registerUserNameExistInfo)
-}
+    const { newNickName, newPassword, id } = ctx.request.body
+    console.log(ctx.request.body);
+    const result = await updateUser({ newNickName, newPassword, id })
+    console.log(result);
 
+    if (!result) {
+        return ctx.body = new ErrorModel(changeInfoFail)
+    }
+    return ctx.body = new SuccessModel(result)
+}
+async function deleteCurUser(ctx) {
+    const id = ctx.params.id
+    const result = await deleteUser(id);
+    console.log(result);
+    if (!result) {
+        return ctx.body = new ErrorModel(deleteFailInfo)
+    }
+    return ctx.body = new SuccessModel(result)
+}
 
 module.exports = {
     login,
-    register
+    register,
+    changeInfo,
+    deleteCurUser
 }

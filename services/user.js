@@ -41,26 +41,39 @@ async function createUser({ userName, password }) {
     const data = result.dataValues
     return data
 }
-async function updateUser({ newUserName }, { userName, password }) {
+/**
+ * 
+ * @param {object} param0 修改的名称，密码
+ */
+async function updateUser({ newNickName, newPassword, id }) {
+    const whereOpt = {
+        id
+    }
     const updateData = {}
-    if (newUserName) {
-        updateData.userName = newUserName
+    if (newPassword) {
+        updateData.password = newPassword
     }
-    const whereData = {
-        userName
+    if (newNickName) {
+        updateData.userName = newNickName
     }
-    if (password) {
-        whereData.password = password
-    }
-    console.log(User)
+
     const result = await User.update(updateData, {
-        where: whereData
+        where: whereOpt
     })
+
+
     return result[0] > 0 //修改的行数
 }
-
+async function deleteUser(id) {
+    const result = await User.destroy({
+        where: { id }
+    })
+    console.log(result);
+    return result > 0 //修改的行数
+}
 module.exports = {
     getUserInfo,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }

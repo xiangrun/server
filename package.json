@@ -10,6 +10,7 @@
   "author": "xiangrun",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^7.0.3",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
