@@ -1,6 +1,6 @@
 /**
  * @description json schema 验证中间件
- * @author 双越老师
+ * 
  */
 
 const { ErrorModel } = require('../models/ResModel')
