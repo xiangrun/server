@@ -3,20 +3,8 @@ const Sequelize = require('sequelize')
 
 
 
-// const sequelize = new Sequelize('test', 'admin', '123456Aa', {
-//     host: '81.68.229.173',
-//     dialect: 'mysql',
-//     operatorsAliases: false,
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         acquire: 30000,
-//         idle: 10000,
-
-//     }
-// })
-const sequelize = new Sequelize('demo', 'root', '12345678', {
-    host: 'localhost',
+const sequelize = new Sequelize('test', 'root_mysql', '123456Aa', {
+    host: 'rm-bp1tmxb598zly8utr.mysql.rds.aliyuncs.com',
     dialect: 'mysql',
     operatorsAliases: false,
     pool: {
@@ -24,8 +12,20 @@ const sequelize = new Sequelize('demo', 'root', '12345678', {
         min: 0,
         acquire: 30000,
         idle: 10000,
+
     }
 })
+// const sequelize = new Sequelize('demo', 'root', '12345678', {
+//     host: 'localhost',
+//     dialect: 'mysql',
+//     operatorsAliases: false,
+//     pool: {
+//         max: 5,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000,
+//     }
+// })
 
 sequelize
     .authenticate()
