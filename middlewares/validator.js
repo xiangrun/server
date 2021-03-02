@@ -13,6 +13,8 @@ const { jsonSchemaFileInfo } = require('../models/ErrorInfo')
 function genValidator(validateFn) {
     // 定义中间件函数
     async function validator(ctx, next) {
+        const data = ctx.request.body
+        console.log(data)
         const error = validateFn(data)
         if (error) {
             // 验证失败

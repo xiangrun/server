@@ -45,16 +45,16 @@ async function createUser({ userName, password }) {
  * 
  * @param {object} param0 修改的名称，密码
  */
-async function updateUser({ newNickName, newPassword, id }) {
+async function updateUser({ userName, password, id }) {
     const whereOpt = {
         id
     }
     const updateData = {}
-    if (newPassword) {
-        updateData.password = newPassword
+    if (password) {
+        updateData.password = password
     }
-    if (newNickName) {
-        updateData.userName = newNickName
+    if (userName) {
+        updateData.userName = userName
     }
 
     const result = await User.update(updateData, {
@@ -71,9 +71,25 @@ async function deleteUser(id) {
     console.log(result);
     return result > 0 //修改的行数
 }
+
+async function getUserList({ pageNo, pageSize }) {
+    const result = await User.findAndCountAll({
+        limit: pageSize, // 每页多少条
+        offset: pageSize * (pageNo - 1), // 跳过多少条
+        order: [['id', 'DESC']],
+    })
+
+    let list = result.rows.map(row => row.dataValues)
+    console.log(list)
+    return {
+        total: result.count,
+        list
+    }
+}
 module.exports = {
     getUserInfo,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserList
 }

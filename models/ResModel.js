@@ -7,8 +7,8 @@
  */
 
 class BaseModel {
-    constructor({ errno, data, message }) {
-        this.errno = errno
+    constructor({ code, data, message }) {
+        this.code = code
         if (data) {
             this.data = data
         }
@@ -25,8 +25,9 @@ class BaseModel {
 class SuccessModel extends BaseModel {
     constructor(data = {}) {
         super({
-            errno: 0,
-            data
+            code: "200",
+            data,
+            message: "ok"
         })
     }
 }
@@ -35,9 +36,9 @@ class SuccessModel extends BaseModel {
  * 失败的数据模型
  */
 class ErrorModel extends BaseModel {
-    constructor({ errno, message }) {
+    constructor({ code, message }) {
         super({
-            errno,
+            code,
             message
         })
     }

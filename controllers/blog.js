@@ -5,11 +5,13 @@ const Op = require('sequelize').Op;
 class Blogs {
     //列表
     async list(ctx) {
+        console.log(ctx)
         const query = ctx.query
+        console.log(query)
         const { rows: data, count: total } = await db.findAndCountAll({
             offset: (+query.page - 1) * +query.pageSize,
             limit: +query.pageSize,
-            order: [["createdAt", 'DESC']]
+            order: [["createdAt"]]
         })
         ctx.body = {
             data,
