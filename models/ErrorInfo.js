@@ -23,5 +23,29 @@ module.exports = {
     jsonSchemaFileInfo: {
         code: 10006,
         message: "校验数据失败"
+    },
+    blogTitleEmptyInfo: {
+        code: 10007,
+        message: "标题不能为空"
+    },
+    blogTitleFaile: {
+        code: 10007,
+        message: "标题已存在"
+    },
+    blogContentEmptyInfo: {
+        code: 10008,
+        message: "内容不能为空"
+    },
+    blogCreateInfo: {
+        code: 10009,
+        message: "创建失败"
+    },
+    idFailInfo: {
+        code: 100010,
+        message: "id不能为空"
+    },
+    queryFailInfo: {
+        code: 100011,
+        message: "查找失败"
     }
 }

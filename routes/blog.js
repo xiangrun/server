@@ -6,7 +6,11 @@ const router = new Router({
 const blog = require("../controllers/blog");
 
 
-router.get('/list', blog.list);
+router.post('/list', blog.list);
+router.post('/create', blog.create);
+router.get('/delete/:id', blog.delete);
+router.post('/update', blog.update);
+router.get('/query/:id', blog.query);
 
 
 module.exports = router;

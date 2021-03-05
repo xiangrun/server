@@ -1,92 +1,103 @@
 //引入模型
-const db = require("../models/bolgModel");
-const Op = require('sequelize').Op;
-
+const { SuccessModel, ErrorModel } = require('../models/ResModel')
+const {
+    blogTitleEmptyInfo,
+    blogContentEmptyInfo,
+    blogCreateInfo,
+    blogTitleFaile,
+    deleteFailInfo,
+    idFailInfo,
+    changeInfoFail,
+    queryFailInfo
+} = require('../models/ErrorInfo')
+const {
+    createBlog,
+    getBlogInfo,
+    getBlogList,
+    deleteBlog,
+    updateBlog,
+    queryBlog
+} = require('../services/blog')
 class Blogs {
     //列表
     async list(ctx) {
-        console.log(ctx)
-        const query = ctx.query
-        console.log(query)
-        const { rows: data, count: total } = await db.findAndCountAll({
-            offset: (+query.page - 1) * +query.pageSize,
-            limit: +query.pageSize,
-            order: [["createdAt"]]
-        })
-        ctx.body = {
-            data,
+        const { pageNo, pageSize } = ctx.request.body;
+        //services
+        const result = await getBlogList({ pageNo, pageSize })
+        const { total, list } = result
+        return ctx.body = new SuccessModel({
+            list,
             total
-        }
+        })
+
     }
     //创建
     async create(ctx) {
-        const params = ctx.request.body;
-        if (!params.title) {
-            ctx.body = {
-                code: 1003,
-                desc: "标题不能为空"
-            }
-            return false
+        const { title, content, author } = ctx.request.body;
+        if (!title) {
+            return ctx.body = new ErrorModel(blogTitleEmptyInfo)
         }
-
+        if (!content) {
+            return ctx.body = new ErrorModel(blogContentEmptyInfo)
+        }
+        //services
+        const titleInfo = await getBlogInfo(title)
+        if (titleInfo) {
+            //标题存在
+            return ctx.body = new ErrorModel(blogTitleFaile)
+        }
         try {
-            await db.create(params)
-            ctx.body = {
-                code: 200,
-                msg: '创建成功'
-            }
+            const data = await createBlog({
+                title,
+                content,
+                author
+            })
+            ctx.body = new SuccessModel(data)
         } catch (err) {
-            ctx.body = {
-                code: 300,
-                msg: err,
-            }
+            console.log(err)
+            return ctx.body = new ErrorModel(blogCreateInfo)
         }
     }
     //删除
 
     async delete(ctx) {
-        const user = await db.findOne({ where: { id: ctx.params.id } })
-        if (!user) {
-            ctx.throw(404, "用户不存在")
+        const id = ctx.params.id;
+        const result = await deleteBlog(id);
+        if (!result) {
+            return ctx.body = new ErrorModel(deleteFailInfo)
         }
-        await user.destroy()
-        ctx.body = 204;
+        return ctx.body = new SuccessModel(result)
     }
+
+    //更新
     async update(ctx) {
-        const params = ctx.request.body;
-        if (!params.id) {
-            ctx.body = {
-                code: "1003",
-                msg: "id不能为空"
-            }
-            return
+        const { title, id, content, author } = ctx.request.body;
+
+        if (!id) {
+            return ctx.body = new ErrorModel(idFailInfo)
         }
-        await db.update(params, {
-            where: { id: params.id }
-        });
-        ctx.body = {
-            code: "200",
-            msg: "修改成功"
+        if (!title) {
+            return ctx.body = new ErrorModel(blogTitleEmptyInfo)
         }
+        if (!content) {
+            return ctx.body = new ErrorModel(blogContentEmptyInfo)
+        }
+        //serivces
+        const result = await updateBlog({ title, id, content, author })
+        if (!result) {
+            return ctx.body = new ErrorModel(changeInfoFail)
+        }
+        return ctx.body = new SuccessModel(result);
     }
     //查找
-    async details(ctx) {
-        const query = ctx.query;
-        console.log(query);
-        if (!query.id) {
-            ctx.body = {
-                code: "1003",
-                msg: "id不能为空"
-            }
-            return
+    async query(ctx) {
+        const id = ctx.params.id;
+        if (!id) {
+            return ctx.body = new ErrorModel(queryFailInfo)
         }
-        const res = await db.findOne({
-            where: { id: Number(query.id) }
-        });
-        if (!res) {
-            ctx.throw(404, "用户不存在")
-        }
-        ctx.body = res;
+        const res = await queryBlog(id)
+
+        return ctx.body = new SuccessModel(res)
     }
 }
 module.exports = new Blogs

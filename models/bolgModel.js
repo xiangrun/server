@@ -19,7 +19,9 @@ const Blog = sequelize.define(
         content: {
             type: TEXT
         },
-
+        author: {
+            type: STRING
+        }
     }
 )
 
