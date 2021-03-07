@@ -47,5 +47,10 @@ module.exports = {
     queryFailInfo: {
         code: 100011,
         message: "查找失败"
-    }
+    },
+    uploadFailInfo: {
+        code: 100012,
+        message: "上传失败"
+    },
+
 }

@@ -39,10 +39,8 @@ async function register(ctx, next) {
  *  登录
  */
 async function login(ctx) {
-    console.log(ctx.verifyParams)
     const { userName, password } = ctx.request.body
     const userInfo = await getUserInfo(userName, password);
-    console.log(userInfo)
     if (!userInfo) {
         //登录失败
         return ctx.body = new ErrorModel(loginFailInfo)
@@ -80,6 +78,10 @@ async function deleteCurUser(ctx) {
     }
     return ctx.body = new SuccessModel(result)
 }
+/**
+ * 用户列表
+ * @param {*} ctx 
+ */
 async function userList(ctx) {
     const { pageNo, pageSize } = ctx.request.body;
     const result = await getUserList({ pageNo, pageSize })

@@ -52,6 +52,7 @@ class Blogs {
                 content,
                 author
             })
+            console.log(data);
             ctx.body = new SuccessModel(data)
         } catch (err) {
             console.log(err)

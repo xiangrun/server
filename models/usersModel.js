@@ -1,5 +1,7 @@
-const { INTEGER, STRING, TEXT } = require('../config/types')
+const { INTEGER, STRING, DATE } = require('../config/types')
 const sequelize = require("../config/sequelize")
+const bcrypt = require("bcryptjs");
+const moment = require('moment');
 
 const User = sequelize.define(
     'users',
@@ -13,7 +15,14 @@ const User = sequelize.define(
         password: {
             type: STRING,
             allowNull: false,
-            comment: '密码'
+            comment: '密码',
+            set(val) {
+                // 加密
+                const salt = bcrypt.genSaltSync(10);
+                // 生成加密密码
+                const psw = bcrypt.hashSync(val, salt);
+                this.setDataValue("password", psw);
+            }
         },
     }
 )
