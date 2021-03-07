@@ -13,7 +13,17 @@ const sequelize = new Sequelize('demo', 'root_mysql', '123456Aa', {
         acquire: 30000,
         idle: 10000,
 
-    }
+    },
+    timezone: '+08:00',
+    define: {
+        createdAt: 'created_at',
+        updatedAt: 'update_at',
+        deletedAt: 'deleted_at',
+        timestamps: true, //设置为false就不会生成createdAt和updatedAt这两个字段了
+        paranoid: true, //添加字段deletedAt
+        underscored: true //将所有的驼峰命名的字段名称转换为以下划线链接的字段名称
+    },
+    logging: true, //默认值为true,是否在控制台中显示具体的mysql操作
 })
 //本地数据库
 // const sequelize = new Sequelize('demo', 'root', '12345678', {

@@ -1,4 +1,4 @@
-const blog = require('../controllers/blog')
+
 const { Blog } = require('../models/index')
 const { formatUser } = require('./_format')
 

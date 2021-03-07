@@ -3,6 +3,7 @@
  */
 const { User } = require('../models/index')
 const { formatUser } = require('./_format')
+const bcrypt = require('bcryptjs')
 /**
  *  获取用户信息
  * @param {string} userName 用户名 
@@ -13,22 +14,24 @@ async function getUserInfo(userName, password) {
     const whereOpt = {
         userName
     }
-    if (password) {
-        Object.assign(whereOpt, { password })
-    }
     //查询
     const result = await User.findOne({
-        attributes: ['userName', 'password'],
         where: whereOpt
     })
 
     if (result == null) {
         return result
     }
+    //解密
+    const correct = bcrypt.compareSync(password, result.password);
 
-    const formatRes = formatUser(result.dataValues)
-    console.log(formatRes)
-    return formatRes
+    if (correct) {
+        const formatRes = formatUser(result.dataValues)
+        console.log(formatRes)
+        return formatRes
+    }
+
+
 }
 /**
  * 创建用户
